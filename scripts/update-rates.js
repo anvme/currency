@@ -95,7 +95,7 @@ async function main() {
       }
     };
     
-    writeFileSync('latest.json', JSON.stringify(output, null, 2));
+    writeFileSync('latest.json', JSON.stringify(output));
     console.log('✓ Updated latest.json');
     console.log(`Total rates: ${Object.keys(output.rates).length}`);
     
