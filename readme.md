@@ -89,7 +89,7 @@ https://cdn.jsdelivr.net/gh/anvme/currency@main/latest.json
 ## 📊 Update Frequency
 
 - **Fiat currencies:** Daily (weekdays) from European Central Bank
-- **Cryptocurrencies:** Every 20 minutes via CoinGecko API
+- **Cryptocurrencies:** Every 20 minutes
 - **Workflow runs:** Every 20 minutes via GitHub Actions
 
 ## 💡 Pro Tips
