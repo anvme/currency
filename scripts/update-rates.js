@@ -47,6 +47,9 @@ async function fetchECB() {
   
   if (!usdRate) throw new Error('USD rate not found in ECB data');
   
+  // Add EUR itself (inverted USD rate)
+  rates.EUR = parseFloat((1 / usdRate).toFixed(4));
+
   // Second pass: convert all to USD base
   for (const currency of currencies) {
     const code = currency['@_currency'];

@@ -2,12 +2,12 @@ name: Update Exchange Rates
 
 on:
   schedule:
-    - cron: '*/15 * * * *'  # Every 15 minutes
-  workflow_dispatch:  # Manual trigger
+    - cron: '*/20 * * * *'
+  workflow_dispatch:
 
 permissions:
   contents: write
-  
+
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
       
       - name: Install dependencies
         run: npm install
@@ -34,3 +34,9 @@ jobs:
           git add latest.json
           git diff --staged --quiet || git commit -m "Update rates - $(date -u +'%Y-%m-%d %H:%M UTC')"
           git push
+      
+      - name: Purge JSDelivr CDN cache
+        run: |
+          sleep 5
+          curl https://purge.jsdelivr.net/gh/anvme/currency@main/latest.json
+          echo "✓ CDN cache purged"
