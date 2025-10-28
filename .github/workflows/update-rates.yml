@@ -37,6 +37,6 @@ jobs:
       
       - name: Purge JSDelivr CDN cache
         run: |
-          sleep 5
+          sleep 12
           curl https://purge.jsdelivr.net/gh/anvme/currency@main/latest.json
           echo "✓ CDN cache purged"
