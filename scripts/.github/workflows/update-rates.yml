@@ -1,0 +1,33 @@
+name: Update Exchange Rates
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'  # Every 15 minutes
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Fetch and update rates
+        run: node scripts/update-rates.js
+      
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "bot@github.com"
+          git config --local user.name "Exchange Rate Bot"
+          git add latest.json
+          git diff --staged --quiet || git commit -m "Update rates - $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push
