@@ -1,6 +1,6 @@
 # Currency Exchange Rates API
 
-Automated exchange rate aggregator providing USD-based rates for fiat currencies and major cryptocurrencies (Bitcoin, Solana & Ethereum). Updates every 15 minutes via GitHub Actions.
+Automated exchange rate aggregator providing USD-based rates for fiat currencies and major cryptocurrencies (Bitcoin, Solana & Ethereum). Updates every ~20 minutes via GitHub Actions.
 
 ## 🔡 API Endpoint
 
@@ -88,21 +88,20 @@ https://cdn.jsdelivr.net/gh/anvme/currency@main/latest.json
 
 ## 📊 Update Frequency
 
-- **Fiat currencies:** Daily (weekdays) from European Central Bank
-- **Cryptocurrencies:** Every 30 minutes via CoinGecko API
-- **Workflow runs:** Every 30 minutes via GitHub Actions
+- **Fiat currencies:** Daily (weekdays ~4pm) from European Central Bank
+- **Cryptocurrencies:** Every 20 minutes
+- **Workflow runs:** Every 20 minutes via GitHub Actions
 
 ## 💡 Pro Tips
 
 - **Cache responses** locally to reduce API calls
 - **Implement retry logic** for production applications
-- **Monitor the `updated` field** to ensure data freshness
-- **Store rates locally** and refresh only when needed (every 30 min for crypto, daily for fiat)
+- **Monitor the `updated` field** to ensure data freshness- **Store rates locally** and refresh only when needed (every ~20 min for crypto, daily for fiat)
 
 ## 🔒 Rate Limits
 
 - **No rate limits** on jsDelivr CDN!
-- **Best practice:** Cache responses for at least 25-30 minutes to reduce unnecessary requests
+- **Best practice:** Cache responses for at least 20 minutes to reduce unnecessary requests
 
 ## 📄 License
 
