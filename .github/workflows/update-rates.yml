@@ -11,32 +11,35 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      
-      - name: Install dependencies
-        run: npm install
-      
+
       - name: Fetch and update rates
-        run: node scripts/update-rates.js
-      
+        run: bash scripts/update-rates.sh
+
       - name: Commit and push changes
+        id: commit
         run: |
           git config --local user.email "bot@github.com"
           git config --local user.name "Exchange Rate Bot"
           git add latest.json
-          git diff --staged --quiet || git commit -m "Update rates - $(date -u +'%Y-%m-%d %H:%M UTC')"
-          git push
-      
+          if git diff --staged --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "Update rates - $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Purge JSDelivr CDN cache
+        if: steps.commit.outputs.changed == 'true'
         run: |
-          sleep 12
-          curl https://purge.jsdelivr.net/gh/anvme/currency@main/latest.json
-          echo "✓ CDN cache purged"
+          # Purge twice with a gap — jsdelivr is multi-CDN,
+          # propagation takes time and can't be reliably verified
+          curl -sf "https://purge.jsdelivr.net/gh/anvme/currency@main/latest.json" > /dev/null
+          echo "✓ First purge sent"
+          sleep 3
+          curl -sf "https://purge.jsdelivr.net/gh/anvme/currency@main/latest.json" > /dev/null
+          echo "✓ Second purge sent — CDN will propagate within minutes"
